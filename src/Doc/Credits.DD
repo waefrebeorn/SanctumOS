@@ -38,7 +38,7 @@ $FG,2$Terry A. Davis$FG$ wrote all of TempleOS over a span of $FG,2$$TX,"15.0",D
 
 *) The random number generator is from Donald Knuth in the wikipedia entry for $TX,"Linear_congruential_generator",HTML="http://en.wikipedia.org/wiki/Linear_congruential_generator"$.
 
-*) The $FG,4$optional$FG$ UEFI-compatible Limine bootloader is copyrighted by GitHub user 'mintsuki' and project contributors, under the BSD-2 License.  $FG,4$This bootloader is NOT included by default$FG$, and is only available on ZealOS distro ISO builds marked "BSD2-UEFI" in the ISO filename.
+*) The $FG,4$optional$FG$ UEFI-compatible Limine bootloader is copyrighted by GitHub user 'mintsuki' and project contributors, under the BSD-2 License.  $FG,4$This bootloader is NOT included by default$FG$, and is only available on SanctumOS distro ISO builds marked "BSD2-UEFI" in the ISO filename.
 $FG,8$
 * "MSDOS", "Windows", and "FAT32" are trademarks owned by MicroSoft Corp.
 * "MATLAB" is a trademark owned by The Math Works, Inc.

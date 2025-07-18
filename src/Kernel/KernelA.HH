@@ -1,4 +1,4 @@
-// Main ZealOS header
+// Main SanctumOS header
 
 #help_index ""
 extern class CAOT;

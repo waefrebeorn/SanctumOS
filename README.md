@@ -1,12 +1,18 @@
-# ZealOS
+# SanctumOS
 
-[![Discord](https://img.shields.io/discord/934200098144022609?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://discord.gg/rK6U3xdr7D) [![](https://img.shields.io/badge/wiki-documentation-forestgreen)](https://zeal-operating-system.github.io/ZealOS-wiki/) [![Build ZealOS ISOs](https://github.com/Zeal-Operating-System/ZealOS/actions/workflows/build.yml/badge.svg)](https://github.com/Zeal-Operating-System/ZealOS/actions/workflows/build.yml)
+[![Discord](https://img.shields.io/discord/934200098144022609?color=7289DA&label=Discord&logo=discord&logoColor=white)](https://discord.gg/rK6U3xdr7D) [![](https://img.shields.io/badge/wiki-documentation-forestgreen)](https://zeal-operating-system.github.io/ZealOS-wiki/) [![Build SanctumOS ISOs](https://github.com/Zeal-Operating-System/SanctumOS/actions/workflows/build.yml/badge.svg)](https://github.com/Zeal-Operating-System/SanctumOS/actions/workflows/build.yml)
 
-The Zeal Operating System is a modernized fork of the 64-bit Temple Operating System. Guiding principles of development include transparency, full user control, and adherence to public-domain/open-source implementations.
+SanctumOS is an exploration into a different philosophy of computing based on two principles:
+
+**The User is God (Ring 0):** The person at the keyboard has absolute, direct, and unmediated control over the entire machine. The shell, the file manager, the compiler—the entire user-facing environment—runs with the highest privilege (Ring 0). There are no layers of abstraction between the user and the hardware.
+
+**The World is a Walled Garden (Ring 3):** Any interaction with the outside world, especially networking, is fundamentally untrustworthy. All such processes must be treated as hostile. They will run in a powerless, sandboxed prison (Ring 3), with no direct access to the system.
+
+Our goal is not to build a "secure" OS in the modern sense, but to create a system of absolute architectural purity and user empowerment. We are building this because we can.
 
 ![](/screenshots/screenshot2.png)
 
-ZealOS strives to be simple, documented, and require as little of a knowledge gap as possible. One person should be able to comprehend the entire system in at least a semi-detailed way within a few days of study.
+SanctumOS strives to be simple, documented, and require as little of a knowledge gap as possible. One person should be able to comprehend the entire system in at least a semi-detailed way within a few days of study.
 
 **Simplify, don't complicate; make accessible, don't obfuscate.**
 
@@ -21,7 +27,7 @@ Features in development include:
   - VBE graphics with variable resolutions
   - Reformatted code for readability
   - Added comments and documentation
-  - HolyC -> ZealC
+  - HolyC -> SanctumC
   - System-wide renaming for clarity
 
 ## Getting started
@@ -46,7 +52,7 @@ Afterwards, you can make a pull request on the `master` branch.
 
 In around November of 2019, [VoidNV](https://web.archive.org/web/20210414181948/https://github.com/VoidNV) forked [ZenithOS](https://web.archive.org/web/20200811190005/https://github.com/VoidNV/ZenithOS) from TempleOS. [Releases of pre-git ZenithOS are currently archived on the mega.nz website.](https://mega.nz/#F!ZIEGmSRQ!qvL6Wk6THzE-dazkfT6N3Q) The repository was removed in August of 2020, and reuploaded to [ZenithOS](https://web.archive.org/web/20210630230454/https://github.com/ZenithOS/ZenithOS). The latest archived [front page](https://web.archive.org/web/20200811190005/https://github.com/VoidNV/ZenithOS/), [master.zip](https://web.archive.org/web/20200811190054/https://codeload.github.com/VoidNV/ZenithOS/zip/master), and [related links](https://web.archive.org/web/*/https://github.com/VoidNV/ZenithOS/*) can be found on archive.org.
 
-In July of 2021, ZealOS was forked from ZenithOS.
+In July of 2021, SanctumOS was forked from ZenithOS.
 
 ## Screenshots
 
