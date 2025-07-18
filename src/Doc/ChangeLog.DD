@@ -32,8 +32,8 @@ $IV,1$----12/21/22 03:38:35----$IV,0$
 
 $IV,1$----11/02/22 20:26:55----$IV,0$
 * Raised version number to 2.00.
-* Updated the $LK,"Charter",A="FI:::/Doc/Charter.DD"$ to allow non-Public-Domain MBR/UEFI bootloaders, as long as the Public Domain ZealOS HDD/DVD Boot Loaders are included, offered, and functional. The Charter upholds that all operating system code must still be 100% public domain. Updated $LK+PU,"Credits",A="FI:::/Doc/Credits.DD"$, $LK+PU,"FAQ",A="FI:::/Doc/FAQ.DD"$, $LK+PU,"Features.DD",A="FI:::/Doc/Features.DD"$, $LK+PU,"Welcome.DD",A="FI:::/Doc/Welcome.DD"$.
-* Added 128-bit signature to $LK+PU,"KStart32",A="FF:::/Kernel/KStart32.ZC,JMP @@02"$ to allow for booting the ZealOS Kernel.ZXE from 32-bit mode via a prekernel booted from any other bootloader. The signature is jumped over with JMP if booted from the Public Domain ZealOS Boot Loaders to KStart16 to KStart32.
+* Updated the $LK,"Charter",A="FI:::/Doc/Charter.DD"$ to allow non-Public-Domain MBR/UEFI bootloaders, as long as the Public Domain SanctumOS HDD/DVD Boot Loaders are included, offered, and functional. The Charter upholds that all operating system code must still be 100% public domain. Updated $LK+PU,"Credits",A="FI:::/Doc/Credits.DD"$, $LK+PU,"FAQ",A="FI:::/Doc/FAQ.DD"$, $LK+PU,"Features.DD",A="FI:::/Doc/Features.DD"$, $LK+PU,"Welcome.DD",A="FI:::/Doc/Welcome.DD"$.
+* Added 128-bit signature to $LK+PU,"KStart32",A="FF:::/Kernel/KStart32.ZC,JMP @@02"$ to allow for booting the SanctumOS Kernel.ZXE from 32-bit mode via a prekernel booted from any other bootloader. The signature is jumped over with JMP if booted from the Public Domain SanctumOS Boot Loaders to KStart16 to KStart32.
 * Created external Public Domain "ZealBooter" prekernel written in C, for use with booting Kernel.ZXE from other bootloaders, primarily targeting Limine. ZealBooter compiles to an ELF file that Limine boots into and passes boot-time information to, which ZealBooter then uses to boot into and pass information to the Kernel.ZXE kernel header.
 * Implemented Limine bootloader install prompt to $LK+PU,"OSInstall",A="FI:::/Misc/OSInstall.ZC"$. Created $LK+PU,"LimineCFGMake and LimineMHDIns",A="FI:::/System/Boot/LimineMHDIns.ZC"$ to allow for installing Limine to MBR, and for generating the Limine.CFG file required. 
 * Added ";*.CFG*" to $LK+PU,"FILEMASK_TXT",A="MN:FILEMASK_TXT"$
@@ -44,7 +44,7 @@ $IV,1$----11/02/22 20:26:55----$IV,0$
 	- Moved SYS_VBE_INFO and SYS_VBE_FINAL_MODE_NUM out of the Kernel header, renamed to $LK+PU,"VBE_INFO",A="FF:::/Kernel/KStart16.ZC,VBE_INFO"$ and $LK+PU,"VBE_FINAL_MODE_NUM",A="FF:::/Kernel/KStart16.ZC,VBE_FINAL_MODE_NUM"$.
 	- Replaced SYS_VBE_MODES with $LK+PU,"SYS_FRAMEBUFFER_LIST",A="FF:::/Kernel/KStart16.ZC,SYS_FRAMEBUFFER_LIST"$, changed KStart16 $LK+PU,"VBE Mode iteration",A="FF:::/Kernel/KStart16.ZC,height[DX]"$ to put VBE Mode values into this list.
 	- Removed SYS_VBE_FINAL_MODE.
-	- Removed compile-time StreamPrint-ed SCREEN_WIDTH and SCREEN_HEIGHT with $LK+PU,"REQUESTED_SCREEN_WIDTH",A="FF:::/Kernel/KStart16.ZC,REQUESTED_SCREEN_WIDTH"$ and $LK+PU,"REQUESTED_SCREEN_HEIGHT",A="FF:::/Kernel/KStart16.ZC,REQUESTED_SCREEN_HEIGHT"$, and removed resolution In() strings from all DoDistro related files and define values. By default, ZealOS will always try to look for and use a VBE mode with 1024x768 screen resolution. These can be changed to request a different screen resolution from the VBE Mode list returned from the BIOS. The Kernel must still be recompiled with $LK+PU,"BootHDIns",A="MN:BootHDIns"$ to make changes to these variables take effect.
+	- Removed compile-time StreamPrint-ed SCREEN_WIDTH and SCREEN_HEIGHT with $LK+PU,"REQUESTED_SCREEN_WIDTH",A="FF:::/Kernel/KStart16.ZC,REQUESTED_SCREEN_WIDTH"$ and $LK+PU,"REQUESTED_SCREEN_HEIGHT",A="FF:::/Kernel/KStart16.ZC,REQUESTED_SCREEN_HEIGHT"$, and removed resolution In() strings from all DoDistro related files and define values. By default, SanctumOS will always try to look for and use a VBE mode with 1024x768 screen resolution. These can be changed to request a different screen resolution from the VBE Mode list returned from the BIOS. The Kernel must still be recompiled with $LK+PU,"BootHDIns",A="MN:BootHDIns"$ to make changes to these variables take effect.
 	- Removed MAX_VBE_MODE and MAX_SCREEN_HEIGHT, replaced with $LK+PU,"VBE_STD_MODE_NUM",A="FF:::/Kernel/KStart16.ZC,VBE_STD_MODE_NUM"$ which gets set to the VBE mode that has a 1024x768 resolution, to use as a fallback mode if the requested resolution isn't available.
 	- Changed $LK+PU,"KStart32 temp stack",A="FF:::/Kernel/KStart32.ZC,SYS_BOOT_STACK"$ to use new $LK+PU,"SYS_BOOT_STACK",A="FF:::/Kernel/KStart16.ZC,SYS_BOOT_STACK"$ kernel header variable, rather than hardcoded constant value. Default value is $LK+PU,"BOOT_RAM_LIMIT",A="MN:BOOT_RAM_LIMIT"$, same as what it was previously hardcoded to.
 	- Changed $LK+PU,"KStart64 boot stack PUSH",A="FF:::/Kernel/KStart64.ZC,SYS_BOOT_STACK"$ from hardcoded value to use value stored in new $LK+PU,"SYS_BOOT_STACK",A="FF:::/Kernel/KStart16.ZC,SYS_BOOT_STACK"$ header field.
@@ -123,7 +123,7 @@ $IV,1$----12/30/21 17:12:01----$IV,0$
 
 $IV,1$----12/11/21 05:57:44----$IV,0$
 * Raised version number to 1.07.
-* $UL,1$Rename CosmiC -> ZealC.$UL,0$
+* $UL,1$Rename CosmiC -> SanctumC.$UL,0$
 * $UL$Renamed all files from .CC -> .ZC to reflect language name change.$UL,0$
 * $LK,"R",A="MN:R"$("HOLYC_TYPECAST", "POSTFIX_TYPECAST", "-i");
 * $LK,"R",A="MN:R"$("CosmiC", "ZealC", "-i");
@@ -332,17 +332,17 @@ $IV,1$----07/02/21 03:58:09----$IV,0$
 
 $IV,1$----07/01/21 23:51:14----$IV,0$
 * Raised version number to 0.02.
-* Added support for reading TempleOS, ZenithOS, and ZealOS ISOs.
+* Added support for reading TempleOS, ZenithOS, and SanctumOS ISOs.
 * Renames:
 	- Seth	--> Executive
 
 $IV,1$----07/01/21 19:04:09----$IV,0$
-$BK,1$* Forked ZealOS from ZenithOS. Version number 2.01 --> 0.01.$BK,0$
+$BK,1$* Forked SanctumOS from ZenithOS. Version number 2.01 --> 0.01.$BK,0$
 * Update Roadmap.
 * Restructured Net/ directories.
 * Removed unnecessary files in Home/ directory.
 * Renames:
-	- ZenithOS		--> ZealOS
+	- ZenithOS		--> SanctumOS
 	- Zenith Task	--> System Task
 
 	- $FG,5$Zenith$FG$		--> $FG,5$Sys$FG$

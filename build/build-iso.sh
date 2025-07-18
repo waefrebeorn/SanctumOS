@@ -32,27 +32,25 @@ TMPMOUNT="$TMPDIR/mnt"
 QEMU_BIN_PATH="$(dirname "$(which qemu-system-x86_64)")"
 
 mount_tempdisk() {
-	sudo modprobe nbd
-	sudo "$QEMU_BIN_PATH/qemu-nbd" -c /dev/nbd0 -f raw "$TMPDISK"
-	sudo partprobe /dev/nbd0 || true
-	sudo mount /dev/nbd0p1 "$TMPMOUNT"
+	udisksctl loop-setup -f "$TMPDISK"
+	mount /dev/loop0p1 "$TMPMOUNT"
 }
 
 umount_tempdisk() {
 	sync
-	sudo umount "$TMPMOUNT"
-	sudo "$QEMU_BIN_PATH/qemu-nbd" -d /dev/nbd0
+	umount "$TMPMOUNT"
+	udisksctl loop-delete -b /dev/loop0
 }
 
 script_cleanup() {
     sync
 
-    sudo umount "$TMPMOUNT" >/dev/null 2>&1 || true
-    sudo "$QEMU_BIN_PATH/qemu-nbd" -d /dev/nbd0 >/dev/null 2>&1 || true
+    umount "$TMPMOUNT" >/dev/null 2>&1 || true
+    udisksctl loop-delete -b /dev/loop0 >/dev/null 2>&1 || true
 
     echo "Deleting temp folder ..."
-    sudo rm -rf "$TMPDIR"
-    sudo rm -rf "$TMPISODIR"
+    rm -rf "$TMPDIR"
+    rm -rf "$TMPISODIR"
 }
 
 trap 'script_cleanup' EXIT
@@ -61,7 +59,7 @@ mkdir -p "$TMPMOUNT"
 mkdir -p "$TMPISODIR"
 
 echo "Building ZealBooter..."
-make -C ../zealbooter distclean all || ( echo "ERROR: ZealBooter build failed !" && false )
+make -C ../zealbooter all || ( echo "ERROR: ZealBooter build failed !" && false )
 
 echo "Making temp vdisk, running auto-install ..."
 "$QEMU_BIN_PATH/qemu-img" create -f raw "$TMPDISK" 1024M
@@ -72,8 +70,8 @@ rm -f ../src/Home/Registry.ZC
 rm -f ../src/Home/MakeHome.ZC
 rm -f ../src/Boot/Kernel.ZXE
 mount_tempdisk
-sudo mkdir -p "$TMPMOUNT/Tmp/OSBuild"
-sudo cp -r ../src/* "$TMPMOUNT/Tmp/OSBuild/"
+mkdir -p "$TMPMOUNT/Tmp/OSBuild"
+cp -r ../src/* "$TMPMOUNT/Tmp/OSBuild/"
 umount_tempdisk
 
 echo "Rebuilding kernel headers, kernel, OS, and building Distro ISO ..."
@@ -110,22 +108,22 @@ sed -i "s/\[\]/\[$(grep -o "0x" ./limine/limine-bios-hdd.h | wc -l)\]/g" limine/
 mount_tempdisk
 echo "Extracting MyDistro ISO from vdisk ..."
 cp "$TMPMOUNT/Tmp/MyDistro.ISO.C" ./ZealOS-MyDistro.iso
-sudo rm -f "$TMPMOUNT/Tmp/MyDistro.ISO.C"
+rm -f "$TMPMOUNT/Tmp/MyDistro.ISO.C"
 echo "Setting up temp ISO directory contents for use with limine xorriso command ..."
-sudo cp -rf "$TMPMOUNT"/* "$TMPISODIR/"
-sudo rm -f "$TMPISODIR/Boot/OldMBR.BIN"
-sudo rm -f "$TMPISODIR/Boot/BootMHD2.BIN"
-sudo mkdir -p "$TMPISODIR/EFI/BOOT"
-sudo cp limine/Limine-BIOS-HDD.HH "$TMPISODIR/Boot/Limine-BIOS-HDD.HH"
-sudo cp limine/BOOTX64.EFI "$TMPISODIR/EFI/BOOT/BOOTX64.EFI"
-sudo cp limine/limine-uefi-cd.bin "$TMPISODIR/Boot/Limine-UEFI-CD.BIN"
-sudo cp limine/limine-bios-cd.bin "$TMPISODIR/Boot/Limine-BIOS-CD.BIN"
-sudo cp limine/limine-bios.sys "$TMPISODIR/Boot/Limine-BIOS.SYS"
-sudo cp ../zealbooter/bin/kernel "$TMPISODIR/Boot/ZealBooter.ELF"
-sudo cp ../zealbooter/limine.conf "$TMPISODIR/Boot/Limine.CONF"
+cp -rf "$TMPMOUNT"/* "$TMPISODIR/"
+rm -f "$TMPISODIR/Boot/OldMBR.BIN"
+rm -f "$TMPISODIR/Boot/BootMHD2.BIN"
+mkdir -p "$TMPISODIR/EFI/BOOT"
+cp limine/Limine-BIOS-HDD.HH "$TMPISODIR/Boot/Limine-BIOS-HDD.HH"
+cp limine/BOOTX64.EFI "$TMPISODIR/EFI/BOOT/BOOTX64.EFI"
+cp limine/limine-uefi-cd.bin "$TMPISODIR/Boot/Limine-UEFI-CD.BIN"
+cp limine/limine-bios-cd.bin "$TMPISODIR/Boot/Limine-BIOS-CD.BIN"
+cp limine/limine-bios.sys "$TMPISODIR/Boot/Limine-BIOS.SYS"
+cp ../zealbooter/bin/kernel "$TMPISODIR/Boot/ZealBooter.ELF"
+cp ../zealbooter/limine.conf "$TMPISODIR/Boot/Limine.CONF"
 echo "Copying DVDKernel.ZXE over ISO Boot/Kernel.ZXE ..."
-sudo mv "$TMPMOUNT/Tmp/DVDKernel.ZXE" "$TMPISODIR/Boot/Kernel.ZXE"
-sudo rm -f "$TMPISODIR/Tmp/DVDKernel.ZXE"
+mv "$TMPMOUNT/Tmp/DVDKernel.ZXE" "$TMPISODIR/Boot/Kernel.ZXE"
+rm -f "$TMPISODIR/Tmp/DVDKernel.ZXE"
 umount_tempdisk
 
 xorriso -as mkisofs -R -r -J -b Boot/Limine-BIOS-CD.BIN \
